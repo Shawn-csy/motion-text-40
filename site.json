@@ -1,0 +1,13 @@
+{
+  "name": "Motion Text Lab｜第一組文字特效",
+  "slug": "motion-text-40",
+  "description": "提供 01–40 種文字動畫素材，適合剪片、片頭、字幕與社群短片，也能交給 Agent 使用。",
+  "site_type": "VISUALIZER",
+  "niche": "動態文字與 Motion Graphics",
+  "data": {
+    "source": "inspired-by-motion-text-reference",
+    "collection": "01–40",
+    "total_effects": 40,
+    "implemented_effects": 40
+  }
+}

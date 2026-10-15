@@ -1,0 +1,43 @@
+{
+  "schema": "motion-text-agent-manifest@1",
+  "name": "Motion Text Lab",
+  "purpose": "讓 agent 能讀取第一組動態文字效果、依需求選擇 effect_id，並開啟可重播的 playground 或下載素材包。",
+  "read_first": {
+    "registry": "./effects.json",
+    "guide": "./agent-guide.md",
+    "runtime_stylesheet": "./reference.css"
+  },
+  "api": {
+    "registry": {"method": "GET", "path": "./effects.json", "returns": "collection.range + effects[]"},
+    "manifest": {"method": "GET", "path": "./agent-manifest.json", "returns": "agent contract + stable selectors"},
+    "preview": {"method": "URL", "template": "./index.html?effect={effect_id}&text={text}&speed={speed}#playground", "effect_id_source": "effects[].id", "number_source": "effects[].order"},
+    "runtime": {"global": "window.MotionTextLab", "methods": ["getState()", "selectEffect(effect_id)", "setText(text)", "replay()"]},
+    "download": {"method": "DOM", "selector": "#download-current", "returns": "standalone HTML containing one effect and the current text"}
+  },
+  "primary_actions": [
+    {"id": "list_effects", "method": "GET", "resource": "./effects.json", "result": "effects[]"},
+    {"id": "choose_effect", "method": "URL", "template": "./index.html?effect={effect_id}&text={text}&speed={speed}#playground", "required": ["effect_id"], "optional": ["text", "speed"]},
+    {"id": "set_controls", "method": "DOM", "selector": "#playground", "fields": ["[data-agent-field=text]", "[data-agent-field=effect]", "[data-agent-field=speed]"], "behavior": "文字、效果與速度即時更新 playground"},
+    {"id": "replay_effect", "method": "DOM", "selector": "#replay-button"},
+    {"id": "download_html", "method": "DOM", "selector": "#download-current", "precondition": "先選擇或套用 effect_id", "result": "standalone HTML file"},
+    {"id": "copy_agent_prompt", "method": "DOM", "selector": "#copy-prompt", "precondition": "先選擇或套用 effect_id", "result": "implementation prompt with visual, HTML, CSS, keyframe, and speed instructions"},
+    {"id": "copy_card_prompt", "method": "DOM", "selector": "[data-copy-prompt]", "effect_id_attribute": "data-copy-prompt"}
+  ],
+  "stable_selectors": {
+    "effect_cards": "[data-effect-card]",
+    "effect_id_attribute": "data-effect-card",
+    "text_input": "#text-input",
+    "effect_select": "#effect-select",
+    "speed_input": "#speed-input",
+    "stage": "#stage-canvas",
+    "active_effect_class": "#stage-canvas[class*=effect--]",
+    "global_copy_prompt": "#copy-prompt",
+    "card_copy_prompt": "[data-copy-prompt]",
+    "effect_range_tabs": "[data-effect-range]",
+    "visible_effect_count": "#visible-effect-count",
+    "usage_help_toggle": "#usage-help-toggle",
+    "usage_help_panel": "#usage-help-panel"
+  },
+  "selection_rule": "先讀 effects.json 的 selection_rules 與每個 effects[].choose_when，再用 effect_id，不要只依顯示名稱猜測。effects.json 是 01–40 的唯一註冊表。",
+  "download_rule": "下載按鈕會產生只包含單一效果容器與文字的 standalone HTML，內嵌必要的基礎樣式與 reference.css；沒有網站框架、標題、說明或控制器。machine-readable metadata 仍由 effects.json 提供。"
+}

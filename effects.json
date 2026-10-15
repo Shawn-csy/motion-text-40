@@ -1,0 +1,1470 @@
+{
+  "schema": "motion-text-effect-registry@1",
+  "site": "Motion Text Lab",
+  "collection": {
+    "id": "collection-01",
+    "name": "第一組文字特效",
+    "range": "01-40",
+    "source_reference": "https://www.threads.com/@ai_yunon_ai/post/DeeJRUjkXlM",
+    "runtime_stylesheet": "./reference.css",
+    "playground_url": "./index.html#playground"
+  },
+  "agent_contract": {
+    "read_order": ["./agent-manifest.json", "./effects.json", "./agent-guide.md"],
+    "choose_by": ["intent", "motion", "tone", "content_type"],
+    "use_effect_id": true,
+    "prompt_contract": "agent_prompt_template is an implementation brief: it describes the visual goal, HTML structure, CSS selectors, keyframe timeline, per-letter variables, and speed-to-duration mapping. Replace {text} and {speed} before copying.",
+    "selection_url_template": "./index.html?effect={effect_id}&text={text}&speed={speed}#playground",
+    "download_action": "Click #download-current after selecting an effect, or generate the package described in the selected effect's export field."
+  },
+  "selection_rules": [
+    {"need": "強烈開場、瞬間打亮", "effect_id": "lightning", "reason": "短促閃光與硬切入場，最適合第一拍。"},
+    {"need": "科技感、切割、分鏡轉場", "effect_id": "laser", "reason": "紅色掃描線穿過文字並形成切面。"},
+    {"need": "遊戲感、逐字翻面", "effect_id": "coin", "reason": "字母像硬幣一樣沿水平軸翻轉並落地。"},
+    {"need": "爆點、衝擊、四向分散", "effect_id": "explode", "reason": "文字先聚焦，再從中心向四方彈開。"},
+    {"need": "消失、記憶、戲劇性退場", "effect_id": "disintegrate", "reason": "字母變成帶色差的模糊碎片並失去重量。"},
+    {"need": "節拍、呼吸、音樂同步", "effect_id": "heartbeat", "reason": "螢光綠底、黑字放大與同心波紋形成鼓動。"},
+    {"need": "萬花筒、MV、循環旋轉", "effect_id": "kaleido", "reason": "文字碎片與幾何框同步旋轉。"},
+    {"need": "倒數、落下、撞擊收尾", "effect_id": "slam", "reason": "數字從上方落下、壓縮並釋放震波。"}
+  ],
+  "effects": [
+    {
+      "id": "lightning",
+      "order": 1,
+      "name": "Lightning Strike",
+      "label_zh": "閃電閃現",
+      "reference_caption": "稻妻の閃光とともに叩きつける",
+      "role": "impact-opening",
+      "tags": ["impact", "opening", "flash", "short"],
+      "choose_when": ["要讓文字在第一拍突然出現", "需要高能量開場"],
+      "avoid_when": ["需要柔和、長時間閱讀"],
+      "motion": "白色與螢光綠閃光先打亮畫面，字母帶模糊從上方落入，閃電斜切畫面。",
+      "visual": {"background": "near-black", "text": "lime-white", "accent": "lime", "tempo": "fast"},
+      "sample": "STRIKE",
+      "implementation": {"container_class": "effect--lightning", "letter_selector": ".stage-word span", "required_css": "./reference.css", "required_markup": "<div class=\"stage-canvas effect--lightning\"><div class=\"stage-word\"><span>S</span><span>T</span><span>R</span><span>I</span><span>K</span><span>E</span></div></div>"},
+      "export": {"format": "motion-text-effect-html@1", "download_name": "01-lightning-strike.html", "runtime_url": "./index.html?effect=lightning&text=STRIKE&speed=1#playground"},
+      "agent_instruction": "For a forceful opening, select effect_id lightning. Keep the text short and use the first beat of the timeline.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效 `lightning`。視覺目標：近黑背景、白色與螢光綠閃光，字母先帶著模糊從上方落入，接著由斜向閃電切過畫面；效果要像第一拍的強烈打擊，不是普通淡入。HTML 請把每個字元拆成 `.stage-word > span`，並在 span 設定 `--i`。容器使用 `.stage-canvas.effect--lightning`，保留 `position:relative`、`overflow:hidden`、`isolation:isolate` 與 `perspective:900px`。字元套用 `ref-lightning-text`：0–6% 隱藏且 blur、9% 快速出現、16–76% 保持可讀、100% 模糊消失；容器 `::before` 做螢光白 radial flash，`::after` 用 `clip-path` 做鋸齒閃電並加 lime glow。動畫必須循環，基準週期 3.2 秒；速度 {speed}x 請用 `animation-duration: calc(3.2s / {speed})`。保留逐字 delay `calc(var(--i) * 42ms)`，不要把所有字做成同一個淡入動畫。"
+    },
+    {
+      "id": "laser",
+      "order": 2,
+      "name": "Laser Cut",
+      "label_zh": "雷射切割",
+      "reference_caption": "レーザーで文字を真っ二つに",
+      "role": "sci-fi-split",
+      "tags": ["sci-fi", "split", "transition", "red-beam"],
+      "choose_when": ["需要科技感轉場", "要表現切開、分割或掃描"],
+      "avoid_when": ["畫面必須保持安靜或自然"],
+      "motion": "細窄紅色光束斜向掃過文字，文字由左側被切入並在切面留下紅色殘光。",
+      "visual": {"background": "black", "text": "warm-white", "accent": "red", "tempo": "fast"},
+      "sample": "CUT",
+      "implementation": {"container_class": "effect--laser", "letter_selector": ".stage-word span", "required_css": "./reference.css", "required_markup": "<div class=\"stage-canvas effect--laser\"><div class=\"stage-word\"><span>C</span><span>U</span><span>T</span></div></div>"},
+      "export": {"format": "motion-text-effect-html@1", "download_name": "02-laser-cut.html", "runtime_url": "./index.html?effect=laser&text=CUT&speed=1#playground"},
+      "agent_instruction": "For a sci-fi cut or split, select effect_id laser and keep the red beam visible across the midpoint.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效 `laser`。視覺目標：黑底、暖白字，一道細窄紅色雷射斜向掃過文字中線，留下紅色切面殘光；雷射掃描必須是主要動作，不是只有紅色光暈。HTML 使用 `.stage-canvas.effect--laser > .stage-word`，並把每個字元拆成 span、設定 `--i`。每個 span 初始 `opacity:0; transform:translateX(-18px) scaleX(.05) skewX(-9deg)`，套用 `ref-laser-letter`：約 22% 展開顯示、27–66% 保持、最後淡出。容器 `::before` 做中線紅色 slice，`::after` 做白色 3px 雷射 beam，從 `left:-35%` 掃到 `108%`，加上 red glow 並旋轉約 -8deg；使用 `ref-laser-beam` 與 `ref-laser-slice`。基準週期 3.2 秒，速度 {speed}x 請使用 `animation-duration: calc(3.2s / {speed})`；逐字 delay 使用 `calc(var(--i) * 58ms)`。"
+    },
+    {
+      "id": "coin",
+      "order": 3,
+      "name": "Coin Flip",
+      "label_zh": "硬幣翻面",
+      "reference_caption": "文字がコインのように回って跳ねる",
+      "role": "game-turn",
+      "tags": ["game", "flip", "3d", "bounce"],
+      "choose_when": ["遊戲介面、抽卡、翻牌", "需要逐字翻面的趣味節奏"],
+      "avoid_when": ["文字很長或需要平面穩定閱讀"],
+      "motion": "米白底上的黑字逐字沿水平軸翻轉，帶螢光綠厚度與輕微落地彈跳。",
+      "visual": {"background": "cream", "text": "black", "accent": "lime", "tempo": "medium"},
+      "sample": "FLIP",
+      "implementation": {"container_class": "effect--coin", "letter_selector": ".stage-word span", "required_css": "./reference.css", "required_markup": "<div class=\"stage-canvas effect--coin\"><div class=\"stage-word\"><span>F</span><span>L</span><span>I</span><span>P</span></div></div>"},
+      "export": {"format": "motion-text-effect-html@1", "download_name": "03-coin-flip.html", "runtime_url": "./index.html?effect=coin&text=FLIP&speed=1#playground"},
+      "agent_instruction": "For a playful game-like turn, select effect_id coin. Use short words so each glyph reads as an individual flip.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效 `coin`。視覺目標：米白背景、黑字帶螢光綠厚度，字母像硬幣一樣逐字沿水平軸做 3D 翻面並輕微彈跳落地；不能退化成平面旋轉或淡入。HTML 使用 `.stage-canvas.effect--coin > .stage-word`，每個字元一個 span、設定 `--i`，並讓字元支援 `transform-style:preserve-3d`。span 初始使用 `rotateY(-92deg) translateY(-20px) scale(.82)`、`opacity:0`，套用 `ref-coin-turn`：約 22% 翻到可見、30–64% 保持、74% 再翻出；用 `text-shadow` 做向右偏移的 lime/深綠厚度。容器 `::before` 加中央橢圓線與淡淡外圈，作為硬幣視覺提示。基準週期 3.2 秒，速度 {speed}x 請使用 `animation-duration: calc(3.2s / {speed})`；逐字 delay 使用 `calc(var(--i) * 74ms)`。"
+    },
+    {
+      "id": "explode",
+      "order": 4,
+      "name": "Explode Out",
+      "label_zh": "向外爆散",
+      "reference_caption": "文字が四方に弾け飛ぶ",
+      "role": "impact-burst",
+      "tags": ["burst", "impact", "particles", "directional"],
+      "choose_when": ["要表現爆點或衝擊波", "文字需要從中心解體"],
+      "avoid_when": ["需要維持字面完整或安靜入場"],
+      "motion": "文字在中心短暫聚焦，接著字母向四方彈開，核心閃光與環形震波同時擴散。",
+      "visual": {"background": "black-violet", "text": "warm-white", "accent": "lime-violet", "tempo": "fast"},
+      "sample": "BURST",
+      "implementation": {"container_class": "effect--explode", "letter_selector": ".stage-word span", "required_css": "./reference.css", "required_markup": "<div class=\"stage-canvas effect--explode\"><div class=\"stage-word\"><span>B</span><span>U</span><span>R</span><span>S</span><span>T</span></div></div>"},
+      "export": {"format": "motion-text-effect-html@1", "download_name": "04-explode-out.html", "runtime_url": "./index.html?effect=explode&text=BURST&speed=1#playground"},
+      "agent_instruction": "For an impact burst, select effect_id explode. The word should be readable before it is thrown outward.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效 `explode`。視覺目標：文字先在畫面中心完整可讀，短暫聚焦後才向四方爆散，同步出現核心閃光、粒子與環形震波；不要一開始就把字拆開。HTML 使用 `.stage-canvas.effect--explode > .stage-word`，每個 span 設定 `--i`、`--x`、`--y`、`--r`，分別代表爆散位移與旋轉。span 由 `opacity:0; transform:translate(0,0) rotate(0) scale(.72)` 開始，套用 `ref-explode-letter`：30–42% 回到完整文字，70% 開始移向變數座標，100% 離場。容器 `::before` 做中心白色核心與 lime glow，`::after` 做向外放大的圓形震波；可再用 pseudo-element 或粒子層補充 burst。基準週期 3.2 秒，速度 {speed}x 請使用 `animation-duration: calc(3.2s / {speed})`；逐字 delay 使用 `calc(var(--i) * 28ms)`。"
+    },
+    {
+      "id": "disintegrate",
+      "order": 5,
+      "name": "Disintegrate",
+      "label_zh": "粒子消散",
+      "reference_caption": "文字が粒になって消える",
+      "role": "dramatic-dissolve",
+      "tags": ["dissolve", "particles", "dramatic", "fade-out"],
+      "choose_when": ["消失、回憶、魔法或戲劇性退場", "需要比淡出更有重量感的離場"],
+      "avoid_when": ["需要立即完成的短按鈕回饋"],
+      "motion": "字母出現色差，逐步模糊、旋轉、向上斜移並拆成粒子，最後從畫面失去重量。",
+      "visual": {"background": "deep-teal", "text": "cream-lime", "accent": "lime-blue", "tempo": "slow"},
+      "sample": "GONE",
+      "implementation": {"container_class": "effect--disintegrate", "letter_selector": ".stage-word span", "required_css": "./reference.css", "required_markup": "<div class=\"stage-canvas effect--disintegrate\"><div class=\"stage-word\"><span>G</span><span>O</span><span>N</span><span>E</span></div></div>"},
+      "export": {"format": "motion-text-effect-html@1", "download_name": "05-disintegrate.html", "runtime_url": "./index.html?effect=disintegrate&text=GONE&speed=1#playground"},
+      "agent_instruction": "For a dramatic disappearance, select effect_id disintegrate and let the full word hold before particles drift away.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效 `disintegrate`。視覺目標：深青黑背景，文字先完整停留，再出現米白與螢光綠色差，逐步模糊、旋轉、向上斜移並像碎片一樣失去重量；不要直接淡出。HTML 使用 `.stage-canvas.effect--disintegrate > .stage-word`，每個 span 設定 `--i`、`--x`、`--y`、`--r`。span 0–20% 保持完整，48% 開始位移與旋轉，76% 加重 blur、降低 opacity，100% 以更大的位移與 blur 消失；套用 `ref-disintegrate-letter`。奇數字元使用 lime 色差，容器 `::before` 做淡淡的 dust cloud radial gradient，另加少量粒子層或 box-shadow 粒子。基準週期 3.2 秒，速度 {speed}x 請使用 `animation-duration: calc(3.2s / {speed})`；逐字 delay 使用 `calc(var(--i) * 62ms)`。"
+    },
+    {
+      "id": "heartbeat",
+      "order": 6,
+      "name": "Heartbeat Zoom",
+      "label_zh": "鼓動放大",
+      "reference_caption": "鼓動に合わせて拡大し波紋が広がる",
+      "role": "rhythmic-pulse",
+      "tags": ["pulse", "rhythm", "zoom", "ripple"],
+      "choose_when": ["節拍、音樂、呼吸或節奏同步", "希望文字一直保持可讀"],
+      "avoid_when": ["需要一次性的爆發或退場"],
+      "motion": "螢光綠底上的黑字依鼓點放大、收縮，同心圓波紋向外擴散。",
+      "visual": {"background": "acid-lime", "text": "black", "accent": "black", "tempo": "rhythmic"},
+      "sample": "PULSE",
+      "implementation": {"container_class": "effect--heartbeat", "letter_selector": ".stage-word span", "required_css": "./reference.css", "required_markup": "<div class=\"stage-canvas effect--heartbeat\"><div class=\"stage-word\"><span>P</span><span>U</span><span>L</span><span>S</span><span>E</span></div></div>"},
+      "export": {"format": "motion-text-effect-html@1", "download_name": "06-heartbeat-zoom.html", "runtime_url": "./index.html?effect=heartbeat&text=PULSE&speed=1#playground"},
+      "agent_instruction": "For beat-synced or breathing type, select effect_id heartbeat. This is the safest default when the text must stay readable.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效 `heartbeat`。視覺目標：螢光綠背景、黑字保持清楚可讀，文字像心跳一樣放大、收縮，同心圓波紋同步向外擴散；重點是呼吸與節奏，不要做成爆炸。HTML 使用 `.stage-canvas.effect--heartbeat > .stage-word`，每個字元一個 span。span 套用 `ref-heart-text`，在 14% 放大到約 1.12 倍、26% 回縮、42% 第二次放大後回到原尺寸；文字加很淡的黑色 offset shadow。容器 `::before` 與 `::after` 各做一圈以中心為基準的 ripple，使用 `ref-heart-ring` 向外放大並淡出，背景維持 acid lime。基準週期 1.8 秒，速度 {speed}x 請使用 `animation-duration: calc(1.8s / {speed})`；文字逐字 delay 可用 `calc(var(--i) * 20ms)`，但不能犧牲整個單字的可讀性。"
+    },
+    {
+      "id": "kaleido",
+      "order": 7,
+      "name": "Text Kaleido",
+      "label_zh": "文字萬花筒",
+      "reference_caption": "文字の万華鏡が回る",
+      "role": "rotating-mv",
+      "tags": ["kaleidoscope", "rotation", "mv", "loop"],
+      "choose_when": ["MV、視覺音樂、循環背景", "希望字母成為幾何圖案"],
+      "avoid_when": ["需要清楚傳達長句資訊"],
+      "motion": "米白底上的黑色與螢光綠字片、幾何框和中心軸同步旋轉，形成萬花筒感。",
+      "visual": {"background": "cream", "text": "black-lime", "accent": "lime", "tempo": "looping"},
+      "sample": "SPIN",
+      "implementation": {"container_class": "effect--kaleido", "letter_selector": ".stage-word span", "required_css": "./reference.css", "required_markup": "<div class=\"stage-canvas effect--kaleido\"><div class=\"stage-word\"><span>S</span><span>P</span><span>I</span><span>N</span></div></div>"},
+      "export": {"format": "motion-text-effect-html@1", "download_name": "07-text-kaleido.html", "runtime_url": "./index.html?effect=kaleido&text=SPIN&speed=1#playground"},
+      "agent_instruction": "For a looping visual-music treatment, select effect_id kaleido. Prefer short words because readability intentionally becomes pattern.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效 `kaleido`。視覺目標：米白背景，黑色與螢光綠文字殘影、菱形幾何框和中心軸同步旋轉，讓短文字逐漸變成 MV 萬花筒圖案；優先保留旋轉與幾何重複，不必一直維持完整可讀。HTML 使用 `.stage-canvas.effect--kaleido > .stage-word`，每個 span 設定 `--i`。span 加入黑色與 lime offset `text-shadow`，套用 `ref-kaleido-text`，在 28%、56%、82% 依序旋轉約 90、180、270 度並帶小幅位移。容器 `::before` 做中央約 45 度旋轉的菱形框，`::after` 做中心十字軸，兩者使用線性旋轉 keyframe。基準週期 4 秒，速度 {speed}x 請使用 `animation-duration: calc(4s / {speed})`；逐字 delay 使用 `calc(var(--i) * 66ms)`。"
+    },
+    {
+      "id": "slam",
+      "order": 8,
+      "name": "Number Slam",
+      "label_zh": "倒數落砸",
+      "reference_caption": "カウントダウンを叩きつける",
+      "role": "countdown-impact",
+      "tags": ["countdown", "number", "slam", "shockwave"],
+      "choose_when": ["倒數、比賽、章節切換或強力收尾", "內容本身是數字"],
+      "avoid_when": ["需要長句或細緻文字"],
+      "motion": "數字從畫面上方高速落下，撞擊基線後壓縮回彈，綠色震波向兩側展開。",
+      "visual": {"background": "black", "text": "cream", "accent": "lime", "tempo": "fast-impact"},
+      "sample": "3",
+      "implementation": {"container_class": "effect--slam", "letter_selector": ".stage-word span", "required_css": "./reference.css", "required_markup": "<div class=\"stage-canvas effect--slam\"><div class=\"stage-word\"><span>3</span></div></div>"},
+      "export": {"format": "motion-text-effect-html@1", "download_name": "08-number-slam.html", "runtime_url": "./index.html?effect=slam&text=3&speed=1#playground"},
+      "agent_instruction": "For a countdown or impact number, select effect_id slam and use one or two numeric characters.",
+      "agent_prompt_template": "你是前端工程師，請為數字「{text}」實作可重播的 CSS 文字特效 `slam`。視覺目標：黑底與米白數字，數字從畫面上方高速落下，撞擊基線時先壓縮再回彈，並釋放螢光綠震波；要有重量感，不是一般向下滑入。HTML 使用 `.stage-canvas.effect--slam > .stage-word`，建議只放 1–2 個數字 span。span 初始 `opacity:0; transform:translateY(-180px) scale(1.45,1.1)`，套用 `ref-slam-letter`：23% 落地壓縮、28% 回彈、34–72% 保持，最後淡出；文字加 lime offset shadow。容器 `::before` 做由中心放大的圓形 ring，`::after` 在底部做水平 impact line，兩者在落地瞬間出現並向外展開。基準週期 3.2 秒，速度 {speed}x 請使用 `animation-duration: calc(3.2s / {speed})`；逐字 delay 使用 `calc(var(--i) * 72ms)`。"
+    },
+{
+      "id": "waveletters",
+      "order": 9,
+      "name": "Wave Letters",
+      "label_zh": "波浪文字",
+      "reference_caption": "字母依序上下起伏並微幅旋轉，像波峰穿過整個單字。",
+      "role": "reference-effect",
+      "tags": [
+            "波浪",
+            "柔軟",
+            "流動標題"
+      ],
+      "choose_when": [
+            "波浪、柔軟、流動標題"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母依序上下起伏並微幅旋轉，像波峰穿過整個單字。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "WAVE",
+      "implementation": {
+            "container_class": "effect--waveletters",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--waveletters\"><div class=\"stage-word\"><span>W</span><span>A</span><span>V</span><span>E</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "09-waveletters.html",
+            "runtime_url": "./index.html?effect=waveletters&text=WAVE&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id waveletters when the brief calls for 波浪、柔軟、流動標題.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Wave Letters」；effect_id 為 waveletters。視覺目標：字母依序上下起伏並微幅旋轉，像波峰穿過整個單字。 HTML 使用 .stage-canvas.effect--waveletters > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：四段 translateY/rotate 波形，25% 到達波峰、50% 下沉、75% 再起伏；用 delay 讓波形逐字傳遞。 套用 ref-waveletters，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 2.8 秒，速度 {speed}x 請使用 animation-duration: calc(2.8s / {speed})；逐字 delay 使用 calc(var(--i) * 70ms)。"
+},
+{
+      "id": "stopmotion",
+      "order": 10,
+      "name": "Stop Motion",
+      "label_zh": "逐格抖動",
+      "reference_caption": "字母像逐格拍攝的紙偶，以 steps 節奏前後抖動和微幅旋轉。",
+      "role": "reference-effect",
+      "tags": [
+            "逐格",
+            "玩具",
+            "手作感"
+      ],
+      "choose_when": [
+            "逐格、玩具、手作感"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母像逐格拍攝的紙偶，以 steps 節奏前後抖動和微幅旋轉。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "STOP",
+      "implementation": {
+            "container_class": "effect--stopmotion",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--stopmotion\"><div class=\"stage-word\"><span>S</span><span>T</span><span>O</span><span>P</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "10-stopmotion.html",
+            "runtime_url": "./index.html?effect=stopmotion&text=STOP&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id stopmotion when the brief calls for 逐格、玩具、手作感.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Stop Motion」；effect_id 為 stopmotion。視覺目標：字母像逐格拍攝的紙偶，以 steps 節奏前後抖動和微幅旋轉。 HTML 使用 .stage-canvas.effect--stopmotion > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：使用 steps(5,end)，每個 span 做少量 translate/rotate，不使用平滑 easing。 套用 ref-stopmotion，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 1.8 秒，速度 {speed}x 請使用 animation-duration: calc(1.8s / {speed})；逐字 delay 使用 calc(var(--i) * 46ms)。"
+},
+{
+      "id": "letterrain",
+      "order": 11,
+      "name": "Letter Rain",
+      "label_zh": "字母雨",
+      "reference_caption": "字母從上方分批落下，經過基線後停住並留下淡淡尾影。",
+      "role": "reference-effect",
+      "tags": [
+            "雨幕",
+            "程式碼",
+            "背景文字"
+      ],
+      "choose_when": [
+            "雨幕、程式碼、背景文字"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母從上方分批落下，經過基線後停住並留下淡淡尾影。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "RAIN",
+      "implementation": {
+            "container_class": "effect--letterrain",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--letterrain\"><div class=\"stage-word\"><span>R</span><span>A</span><span>I</span><span>N</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "11-letterrain.html",
+            "runtime_url": "./index.html?effect=letterrain&text=RAIN&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id letterrain when the brief calls for 雨幕、程式碼、背景文字.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Letter Rain」；effect_id 為 letterrain。視覺目標：字母從上方分批落下，經過基線後停住並留下淡淡尾影。 HTML 使用 .stage-canvas.effect--letterrain > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：span 從 translateY(-150px)、opacity:0 開始，25% 到 72% 顯示；較大 delay 形成雨滴。 套用 ref-letterrain，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.4 秒，速度 {speed}x 請使用 animation-duration: calc(3.4s / {speed})；逐字 delay 使用 calc(var(--i) * 120ms)。"
+},
+{
+      "id": "magnifier",
+      "order": 12,
+      "name": "Magnifier Lens",
+      "label_zh": "放大鏡",
+      "reference_caption": "發光圓形鏡片從左到右掃過文字，掃到的字母短暫放大。",
+      "role": "reference-effect",
+      "tags": [
+            "放大",
+            "解讀",
+            "發現"
+      ],
+      "choose_when": [
+            "放大、解讀、發現"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "發光圓形鏡片從左到右掃過文字，掃到的字母短暫放大。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "ZOOM",
+      "implementation": {
+            "container_class": "effect--magnifier",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--magnifier\"><div class=\"stage-word\"><span>Z</span><span>O</span><span>O</span><span>M</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "12-magnifier.html",
+            "runtime_url": "./index.html?effect=magnifier&text=ZOOM&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id magnifier when the brief calls for 放大、解讀、發現.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Magnifier Lens」；effect_id 為 magnifier。視覺目標：發光圓形鏡片從左到右掃過文字，掃到的字母短暫放大。 HTML 使用 .stage-canvas.effect--magnifier > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：圓形 lens pseudo-element 從 -80px 掃到 80px；span 在 52%–68% scale(1.25)，用 border/box-shadow 做遮罩。 套用 ref-magnifier，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.2 秒，速度 {speed}x 請使用 animation-duration: calc(3.2s / {speed})；逐字 delay 使用 calc(var(--i) * 30ms)。"
+},
+{
+      "id": "scramble",
+      "order": 13,
+      "name": "Scramble Decode",
+      "label_zh": "亂碼解碼",
+      "reference_caption": "文字先模糊低透明度進入，再像亂碼重排一樣逐字解碼。",
+      "role": "reference-effect",
+      "tags": [
+            "駭客",
+            "解碼",
+            "科技感"
+      ],
+      "choose_when": [
+            "駭客、解碼、科技感"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "文字先模糊低透明度進入，再像亂碼重排一樣逐字解碼。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "DECODE",
+      "implementation": {
+            "container_class": "effect--scramble",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--scramble\"><div class=\"stage-word\"><span>D</span><span>E</span><span>C</span><span>O</span><span>D</span><span>E</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "13-scramble.html",
+            "runtime_url": "./index.html?effect=scramble&text=DECODE&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id scramble when the brief calls for 駭客、解碼、科技感.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Scramble Decode」；effect_id 為 scramble。視覺目標：文字先模糊低透明度進入，再像亂碼重排一樣逐字解碼。 HTML 使用 .stage-canvas.effect--scramble > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：用 steps(6,end)，span 初始 opacity:.25、blur(2px)；需要真亂碼時用 JS 替換暫時字元後鎖定原文。 套用 ref-scramble，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 2.8 秒，速度 {speed}x 請使用 animation-duration: calc(2.8s / {speed})；逐字 delay 使用 calc(var(--i) * 80ms)。"
+},
+{
+      "id": "domino",
+      "order": 14,
+      "name": "Domino Letters",
+      "label_zh": "骨牌字母",
+      "reference_caption": "每個字母以 3D rotateX 從後方立起，再像骨牌一樣逐字倒下。",
+      "role": "reference-effect",
+      "tags": [
+            "連鎖",
+            "骨牌",
+            "逐字倒下"
+      ],
+      "choose_when": [
+            "連鎖、骨牌、逐字倒下"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "每個字母以 3D rotateX 從後方立起，再像骨牌一樣逐字倒下。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "DOMINO",
+      "implementation": {
+            "container_class": "effect--domino",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--domino\"><div class=\"stage-word\"><span>D</span><span>O</span><span>M</span><span>I</span><span>N</span><span>O</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "14-domino.html",
+            "runtime_url": "./index.html?effect=domino&text=DOMINO&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id domino when the brief calls for 連鎖、骨牌、逐字倒下.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Domino Letters」；effect_id 為 domino。視覺目標：每個字母以 3D rotateX 從後方立起，再像骨牌一樣逐字倒下。 HTML 使用 .stage-canvas.effect--domino > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：span transform-origin:50% 100%，由 rotateX(-90deg) 進場，30%–70% 回正面，結尾可 rotateX(70deg)。 套用 ref-domino，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.0 秒，速度 {speed}x 請使用 animation-duration: calc(3.0s / {speed})；逐字 delay 使用 calc(var(--i) * 90ms)。"
+},
+{
+      "id": "gradient",
+      "order": 15,
+      "name": "Gradient Flow",
+      "label_zh": "漸層流動",
+      "reference_caption": "彩色漸層沿著文字水平流動，字母只做極小幅上下漂移。",
+      "role": "reference-effect",
+      "tags": [
+            "色彩流動",
+            "品牌標題",
+            "柔和循環"
+      ],
+      "choose_when": [
+            "色彩流動、品牌標題、柔和循環"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "彩色漸層沿著文字水平流動，字母只做極小幅上下漂移。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "FLOW",
+      "implementation": {
+            "container_class": "effect--gradient",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--gradient\"><div class=\"stage-word\"><span>F</span><span>L</span><span>O</span><span>W</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "15-gradient.html",
+            "runtime_url": "./index.html?effect=gradient&text=FLOW&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id gradient when the brief calls for 色彩流動、品牌標題、柔和循環.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Gradient Flow」；effect_id 為 gradient。視覺目標：彩色漸層沿著文字水平流動，字母只做極小幅上下漂移。 HTML 使用 .stage-canvas.effect--gradient > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：用 background-clip:text、透明文字、多色 gradient 和 background-position；span 只做小幅 translateY。 套用 ref-gradient，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.6 秒，速度 {speed}x 請使用 animation-duration: calc(3.6s / {speed})；逐字 delay 使用 calc(var(--i) * 55ms)。"
+},
+{
+      "id": "circletext",
+      "order": 16,
+      "name": "Circle Text",
+      "label_zh": "圓形文字",
+      "reference_caption": "字母沿著圓形軌道旋轉，中心保留細線圓環。",
+      "role": "reference-effect",
+      "tags": [
+            "Logo",
+            "章節徽章",
+            "環形排版"
+      ],
+      "choose_when": [
+            "Logo、章節徽章、環形排版"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母沿著圓形軌道旋轉，中心保留細線圓環。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "CIRCLE",
+      "implementation": {
+            "container_class": "effect--circletext",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--circletext\"><div class=\"stage-word\"><span>C</span><span>I</span><span>R</span><span>C</span><span>L</span><span>E</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "16-circletext.html",
+            "runtime_url": "./index.html?effect=circletext&text=CIRCLE&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id circletext when the brief calls for Logo、章節徽章、環形排版.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Circle Text」；effect_id 為 circletext。視覺目標：字母沿著圓形軌道旋轉，中心保留細線圓環。 HTML 使用 .stage-canvas.effect--circletext > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：容器建立 border ring，span 用 translateY(-12px) rotate(180deg) 循環；真正圓周排版時依 --i 計算角度。 套用 ref-circletext，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 4.0 秒，速度 {speed}x 請使用 animation-duration: calc(4.0s / {speed})；逐字 delay 使用 calc(var(--i) * 55ms)。"
+},
+{
+      "id": "water",
+      "order": 17,
+      "name": "Water Reflection",
+      "label_zh": "水面倒影",
+      "reference_caption": "文字停在水線上方，下方鏡像倒影以低透明度和細微波紋晃動。",
+      "role": "reference-effect",
+      "tags": [
+            "水面",
+            "夜景",
+            "倒影",
+            "朦朧"
+      ],
+      "choose_when": [
+            "水面、夜景、倒影、朦朧"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "文字停在水線上方，下方鏡像倒影以低透明度和細微波紋晃動。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "REFLECT",
+      "implementation": {
+            "container_class": "effect--water",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--water\"><div class=\"stage-word\"><span>R</span><span>E</span><span>F</span><span>L</span><span>E</span><span>C</span><span>T</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "17-water.html",
+            "runtime_url": "./index.html?effect=water&text=REFLECT&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id water when the brief calls for 水面、夜景、倒影、朦朧.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Water Reflection」；effect_id 為 water。視覺目標：文字停在水線上方，下方鏡像倒影以低透明度和細微波紋晃動。 HTML 使用 .stage-canvas.effect--water > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：建立 reflection layer，使用 scaleY(-1)、opacity:.2、blur(1px)；水線 pseudo-element 用 scaleX 波動。 套用 ref-water，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.6 秒，速度 {speed}x 請使用 animation-duration: calc(3.6s / {speed})；逐字 delay 使用 calc(var(--i) * 45ms)。"
+},
+{
+      "id": "bounce",
+      "order": 18,
+      "name": "Letter Bounce",
+      "label_zh": "字母彈跳",
+      "reference_caption": "字母逐字彈起再落下，形成輕快節奏。",
+      "role": "reference-effect",
+      "tags": [
+            "可愛",
+            "活潑",
+            "MV",
+            "逐字彈跳"
+      ],
+      "choose_when": [
+            "可愛、活潑、MV、逐字彈跳"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母逐字彈起再落下，形成輕快節奏。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "BOUNCE",
+      "implementation": {
+            "container_class": "effect--bounce",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--bounce\"><div class=\"stage-word\"><span>B</span><span>O</span><span>U</span><span>N</span><span>C</span><span>E</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "18-bounce.html",
+            "runtime_url": "./index.html?effect=bounce&text=BOUNCE&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id bounce when the brief calls for 可愛、活潑、MV、逐字彈跳.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Letter Bounce」；effect_id 為 bounce。視覺目標：字母逐字彈起再落下，形成輕快節奏。 HTML 使用 .stage-canvas.effect--bounce > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：38% 上跳 -38px，58% 落到 +8px，72% 再小幅上跳；用 cubic-bezier 保留彈性。 套用 ref-bounce，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 2.4 秒，速度 {speed}x 請使用 animation-duration: calc(2.4s / {speed})；逐字 delay 使用 calc(var(--i) * 85ms)。"
+},
+{
+      "id": "flag",
+      "order": 19,
+      "name": "Text Flag",
+      "label_zh": "旗幟文字",
+      "reference_caption": "字母依序 skew/rotate，整個單字像被風吹動的旗幟。",
+      "role": "reference-effect",
+      "tags": [
+            "旗幟",
+            "應援",
+            "風吹",
+            "手作感"
+      ],
+      "choose_when": [
+            "旗幟、應援、風吹、手作感"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母依序 skew/rotate，整個單字像被風吹動的旗幟。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "FLAG",
+      "implementation": {
+            "container_class": "effect--flag",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--flag\"><div class=\"stage-word\"><span>F</span><span>L</span><span>A</span><span>G</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "19-flag.html",
+            "runtime_url": "./index.html?effect=flag&text=FLAG&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id flag when the brief calls for 旗幟、應援、風吹、手作感.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Text Flag」；effect_id 為 flag。視覺目標：字母依序 skew/rotate，整個單字像被風吹動的旗幟。 HTML 使用 .stage-canvas.effect--flag > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：span transform-origin:left center，使用 skewY(-9deg) 和 rotate(-2deg)；容器可加細線皺褶。 套用 ref-flag，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.0 秒，速度 {speed}x 請使用 animation-duration: calc(3.0s / {speed})；逐字 delay 使用 calc(var(--i) * 65ms)。"
+},
+{
+      "id": "gravity",
+      "order": 20,
+      "name": "Gravity Flip",
+      "label_zh": "重力翻轉",
+      "reference_caption": "字母反轉後被重力拉起，從下方 rotateX 進場，再向上翻出。",
+      "role": "reference-effect",
+      "tags": [
+            "重力反轉",
+            "科幻",
+            "上下翻面"
+      ],
+      "choose_when": [
+            "重力反轉、科幻、上下翻面"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母反轉後被重力拉起，從下方 rotateX 進場，再向上翻出。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "GRAVITY",
+      "implementation": {
+            "container_class": "effect--gravity",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--gravity\"><div class=\"stage-word\"><span>G</span><span>R</span><span>A</span><span>V</span><span>I</span><span>T</span><span>Y</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "20-gravity.html",
+            "runtime_url": "./index.html?effect=gravity&text=GRAVITY&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id gravity when the brief calls for 重力反轉、科幻、上下翻面.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Gravity Flip」；effect_id 為 gravity。視覺目標：字母反轉後被重力拉起，從下方 rotateX 進場，再向上翻出。 HTML 使用 .stage-canvas.effect--gravity > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：初始 rotateX(90deg) translateY(80px)、opacity:0，42%–75% 回正面，結尾 rotateX(-90deg) 離場；父層保留 perspective。 套用 ref-gravity，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.0 秒，速度 {speed}x 請使用 animation-duration: calc(3.0s / {speed})；逐字 delay 使用 calc(var(--i) * 80ms)。"
+},
+{
+      "id": "magnet",
+      "order": 21,
+      "name": "Magnet Pull",
+      "label_zh": "磁力聚字",
+      "reference_caption": "字母從各自偏移座標被吸引到中心，成字後再被拉過中心。",
+      "role": "reference-effect",
+      "tags": [
+            "聚焦",
+            "Logo 組合",
+            "吸引"
+      ],
+      "choose_when": [
+            "聚焦、Logo 組合、吸引"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母從各自偏移座標被吸引到中心，成字後再被拉過中心。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "PULL",
+      "implementation": {
+            "container_class": "effect--magnet",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--magnet\"><div class=\"stage-word\"><span>P</span><span>U</span><span>L</span><span>L</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "21-magnet.html",
+            "runtime_url": "./index.html?effect=magnet&text=PULL&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id magnet when the brief calls for 聚焦、Logo 組合、吸引.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Magnet Pull」；effect_id 為 magnet。視覺目標：字母從各自偏移座標被吸引到中心，成字後再被拉過中心。 HTML 使用 .stage-canvas.effect--magnet > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：每個 span 設 --x/--y，從 translate(var(--x),var(--y)) scale(.7) 聚到中心，結尾反向偏移過衝。 套用 ref-magnet，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.0 秒，速度 {speed}x 請使用 animation-duration: calc(3.0s / {speed})；逐字 delay 使用 calc(var(--i) * 55ms)。"
+},
+{
+      "id": "pulsegrid",
+      "order": 22,
+      "name": "Word Pulse Grid",
+      "label_zh": "格線脈衝",
+      "reference_caption": "格線固定在背景，字母依序縮放脈衝，像訊號穿過網格。",
+      "role": "reference-effect",
+      "tags": [
+            "網格",
+            "節奏背景",
+            "數位介面"
+      ],
+      "choose_when": [
+            "網格、節奏背景、數位介面"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "格線固定在背景，字母依序縮放脈衝，像訊號穿過網格。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "GRID",
+      "implementation": {
+            "container_class": "effect--pulsegrid",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--pulsegrid\"><div class=\"stage-word\"><span>G</span><span>R</span><span>I</span><span>D</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "22-pulsegrid.html",
+            "runtime_url": "./index.html?effect=pulsegrid&text=GRID&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id pulsegrid when the brief calls for 網格、節奏背景、數位介面.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Word Pulse Grid」；effect_id 為 pulsegrid。視覺目標：格線固定在背景，字母依序縮放脈衝，像訊號穿過網格。 HTML 使用 .stage-canvas.effect--pulsegrid > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：兩層 linear-gradient 建格線；span 以 scale(.8)、opacity:.5 開始，45%–65% 放大提亮。 套用 ref-gridpulse，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 2.2 秒，速度 {speed}x 請使用 animation-duration: calc(2.2s / {speed})；逐字 delay 使用 calc(var(--i) * 80ms)。"
+},
+{
+      "id": "weight",
+      "order": 23,
+      "name": "Weight Grow",
+      "label_zh": "字重生長",
+      "reference_caption": "細字逐漸長出重量，從窄輕字形變成厚重標題。",
+      "role": "reference-effect",
+      "tags": [
+            "強調",
+            "字體變化",
+            "品牌標題"
+      ],
+      "choose_when": [
+            "強調、字體變化、品牌標題"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "細字逐漸長出重量，從窄輕字形變成厚重標題。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "GROW",
+      "implementation": {
+            "container_class": "effect--weight",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--weight\"><div class=\"stage-word\"><span>G</span><span>R</span><span>O</span><span>W</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "23-weight.html",
+            "runtime_url": "./index.html?effect=weight&text=GROW&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id weight when the brief calls for 強調、字體變化、品牌標題.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Weight Grow」；effect_id 為 weight。視覺目標：細字逐漸長出重量，從窄輕字形變成厚重標題。 HTML 使用 .stage-canvas.effect--weight > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：優先使用 variable font 的 font-weight 300→900，配合 scaleX(.9→1.05) 和逐字 delay。 套用 ref-weight，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.2 秒，速度 {speed}x 請使用 animation-duration: calc(3.2s / {speed})；逐字 delay 使用 calc(var(--i) * 52ms)。"
+},
+{
+      "id": "fan",
+      "order": 24,
+      "name": "Text Fan",
+      "label_zh": "扇形展開",
+      "reference_caption": "字母從中心沿扇形角度展開，再收回成一個單字。",
+      "role": "reference-effect",
+      "tags": [
+            "登場",
+            "和風",
+            "扇形展開"
+      ],
+      "choose_when": [
+            "登場、和風、扇形展開"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母從中心沿扇形角度展開，再收回成一個單字。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "FAN",
+      "implementation": {
+            "container_class": "effect--fan",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--fan\"><div class=\"stage-word\"><span>F</span><span>A</span><span>N</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "24-fan.html",
+            "runtime_url": "./index.html?effect=fan&text=FAN&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id fan when the brief calls for 登場、和風、扇形展開.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Text Fan」；effect_id 為 fan。視覺目標：字母從中心沿扇形角度展開，再收回成一個單字。 HTML 使用 .stage-canvas.effect--fan > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：用 calc((var(--i)-2)*14deg) 計算旋轉，搭配 18px X 位移；48% 展開後回收。 套用 ref-fan，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.6 秒，速度 {speed}x 請使用 animation-duration: calc(3.6s / {speed})；逐字 delay 使用 calc(var(--i) * 70ms)。"
+},
+{
+      "id": "karaoke",
+      "order": 25,
+      "name": "Karaoke Ball",
+      "label_zh": "卡拉 OK 球",
+      "reference_caption": "小球沿文字移動，移動到的字母被提亮，模擬卡拉 OK 播放進度。",
+      "role": "reference-effect",
+      "tags": [
+            "歌詞",
+            "字幕",
+            "播放進度"
+      ],
+      "choose_when": [
+            "歌詞、字幕、播放進度"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "小球沿文字移動，移動到的字母被提亮，模擬卡拉 OK 播放進度。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "SING",
+      "implementation": {
+            "container_class": "effect--karaoke",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--karaoke\"><div class=\"stage-word\"><span>S</span><span>I</span><span>N</span><span>G</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "25-karaoke.html",
+            "runtime_url": "./index.html?effect=karaoke&text=SING&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id karaoke when the brief calls for 歌詞、字幕、播放進度.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Karaoke Ball」；effect_id 為 karaoke。視覺目標：小球沿文字移動，移動到的字母被提亮，模擬卡拉 OK 播放進度。 HTML 使用 .stage-canvas.effect--karaoke > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：span 低透明度，45%–70% 高亮；獨立 ball 從 -130px 到 130px，加入 glow。 套用 ref-karaoke，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.2 秒，速度 {speed}x 請使用 animation-duration: calc(3.2s / {speed})；逐字 delay 使用 calc(var(--i) * 60ms)。"
+},
+{
+      "id": "swing",
+      "order": 26,
+      "name": "Swing Letters",
+      "label_zh": "吊掛擺盪",
+      "reference_caption": "字母像吊在上方的牌子，從固定上緣左右擺動。",
+      "role": "reference-effect",
+      "tags": [
+            "可愛",
+            "吊掛",
+            "鐘擺",
+            "手作"
+      ],
+      "choose_when": [
+            "可愛、吊掛、鐘擺、手作"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母像吊在上方的牌子，從固定上緣左右擺動。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "SWING",
+      "implementation": {
+            "container_class": "effect--swing",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--swing\"><div class=\"stage-word\"><span>S</span><span>W</span><span>I</span><span>N</span><span>G</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "26-swing.html",
+            "runtime_url": "./index.html?effect=swing&text=SWING&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id swing when the brief calls for 可愛、吊掛、鐘擺、手作.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Swing Letters」；effect_id 為 swing。視覺目標：字母像吊在上方的牌子，從固定上緣左右擺動。 HTML 使用 .stage-canvas.effect--swing > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：span transform-origin:50% -120%，在 -10deg 和 10deg 間擺動；父層加 perspective。 套用 ref-swing，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 2.8 秒，速度 {speed}x 請使用 animation-duration: calc(2.8s / {speed})；逐字 delay 使用 calc(var(--i) * 85ms)。"
+},
+{
+      "id": "pixel",
+      "order": 27,
+      "name": "Pixel Dissolve",
+      "label_zh": "像素消融",
+      "reference_caption": "文字先像低解析度像素般模糊，再恢復清晰，最後階梯式消融。",
+      "role": "reference-effect",
+      "tags": [
+            "數位",
+            "像素",
+            "故障式消失"
+      ],
+      "choose_when": [
+            "數位、像素、故障式消失"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "文字先像低解析度像素般模糊，再恢復清晰，最後階梯式消融。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "PIXEL",
+      "implementation": {
+            "container_class": "effect--pixel",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--pixel\"><div class=\"stage-word\"><span>P</span><span>I</span><span>X</span><span>E</span><span>L</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "27-pixel.html",
+            "runtime_url": "./index.html?effect=pixel&text=PIXEL&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id pixel when the brief calls for 數位、像素、故障式消失.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Pixel Dissolve」；effect_id 為 pixel。視覺目標：文字先像低解析度像素般模糊，再恢復清晰，最後階梯式消融。 HTML 使用 .stage-canvas.effect--pixel > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：用 steps(5,end)，span 0–20% blur(4px)/scale(.7)/opacity:.2，42%–72% 恢復，結尾再模糊。 套用 ref-pixel，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.2 秒，速度 {speed}x 請使用 animation-duration: calc(3.2s / {speed})；逐字 delay 使用 calc(var(--i) * 60ms)。"
+},
+{
+      "id": "rotating",
+      "order": 28,
+      "name": "Rotating Words",
+      "label_zh": "旋轉單字",
+      "reference_caption": "單字沿圓周持續旋轉，帶有輕微水平軌道偏移。",
+      "role": "reference-effect",
+      "tags": [
+            "循環單字",
+            "季節",
+            "時間",
+            "轉盤"
+      ],
+      "choose_when": [
+            "循環單字、季節、時間、轉盤"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "單字沿圓周持續旋轉，帶有輕微水平軌道偏移。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "ROTATE",
+      "implementation": {
+            "container_class": "effect--rotating",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--rotating\"><div class=\"stage-word\"><span>R</span><span>O</span><span>T</span><span>A</span><span>T</span><span>E</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "28-rotating.html",
+            "runtime_url": "./index.html?effect=rotating&text=ROTATE&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id rotating when the brief calls for 循環單字、季節、時間、轉盤.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Rotating Words」；effect_id 為 rotating。視覺目標：單字沿圓周持續旋轉，帶有輕微水平軌道偏移。 HTML 使用 .stage-canvas.effect--rotating > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：span 使用 rotate(0→360deg) translateX(18px) 線性循環；長句時把旋轉掛在 wrapper。 套用 ref-rotating，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 4.0 秒，速度 {speed}x 請使用 animation-duration: calc(4.0s / {speed})；逐字 delay 使用 calc(var(--i) * 80ms)。"
+},
+{
+      "id": "blurtrail",
+      "order": 29,
+      "name": "Blur Trail",
+      "label_zh": "模糊殘影",
+      "reference_caption": "字母高速左右掃過，移動時 blur 增強，停下時恢復清晰。",
+      "role": "reference-effect",
+      "tags": [
+            "速度",
+            "疾走",
+            "殘影",
+            "轉場"
+      ],
+      "choose_when": [
+            "速度、疾走、殘影、轉場"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母高速左右掃過，移動時 blur 增強，停下時恢復清晰。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "TRAIL",
+      "implementation": {
+            "container_class": "effect--blurtrail",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--blurtrail\"><div class=\"stage-word\"><span>T</span><span>R</span><span>A</span><span>I</span><span>L</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "29-blurtrail.html",
+            "runtime_url": "./index.html?effect=blurtrail&text=TRAIL&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id blurtrail when the brief calls for 速度、疾走、殘影、轉場.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Blur Trail」；effect_id 為 blurtrail。視覺目標：字母高速左右掃過，移動時 blur 增強，停下時恢復清晰。 HTML 使用 .stage-canvas.effect--blurtrail > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：兩端 translateX(±28px)、blur(5px)、opacity:.3，中段回到清晰；可疊 text-shadow 殘影。 套用 ref-blurtrail，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 2.8 秒，速度 {speed}x 請使用 animation-duration: calc(2.8s / {speed})；逐字 delay 使用 calc(var(--i) * 42ms)。"
+},
+{
+      "id": "checker",
+      "order": 30,
+      "name": "Checker Words",
+      "label_zh": "棋盤文字",
+      "reference_caption": "棋盤格固定在背景，字母以交錯 rotateY 翻轉，像一組翻牌。",
+      "role": "reference-effect",
+      "tags": [
+            "棋盤",
+            "格狀",
+            "翻轉",
+            "遊戲介面"
+      ],
+      "choose_when": [
+            "棋盤、格狀、翻轉、遊戲介面"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "棋盤格固定在背景，字母以交錯 rotateY 翻轉，像一組翻牌。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "CHECK",
+      "implementation": {
+            "container_class": "effect--checker",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--checker\"><div class=\"stage-word\"><span>C</span><span>H</span><span>E</span><span>C</span><span>K</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "30-checker.html",
+            "runtime_url": "./index.html?effect=checker&text=CHECK&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id checker when the brief calls for 棋盤、格狀、翻轉、遊戲介面.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Checker Words」；effect_id 為 checker。視覺目標：棋盤格固定在背景，字母以交錯 rotateY 翻轉，像一組翻牌。 HTML 使用 .stage-canvas.effect--checker > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：兩層 45deg gradient 建棋盤；span 交錯 rotateY(0→180deg) 並縮到 .65，使用 steps(2,end)。 套用 ref-checker，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 2.8 秒，速度 {speed}x 請使用 animation-duration: calc(2.8s / {speed})；逐字 delay 使用 calc(var(--i) * 100ms)。"
+},
+{
+      "id": "roller",
+      "order": 31,
+      "name": "Roller Path",
+      "label_zh": "滾動路徑",
+      "reference_caption": "字母沿水平路徑滾進滾出，移動方向與旋轉同步。",
+      "role": "reference-effect",
+      "tags": [
+            "疾走",
+            "童趣",
+            "橫向進場"
+      ],
+      "choose_when": [
+            "疾走、童趣、橫向進場"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母沿水平路徑滾進滾出，移動方向與旋轉同步。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "ROLL",
+      "implementation": {
+            "container_class": "effect--roller",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--roller\"><div class=\"stage-word\"><span>R</span><span>O</span><span>L</span><span>L</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "31-roller.html",
+            "runtime_url": "./index.html?effect=roller&text=ROLL&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id roller when the brief calls for 疾走、童趣、橫向進場.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Roller Path」；effect_id 為 roller。視覺目標：字母沿水平路徑滾進滾出，移動方向與旋轉同步。 HTML 使用 .stage-canvas.effect--roller > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：span 在 -75px 和 75px 間 translateX，同步 rotate(-18deg→18deg)；可用 offset-path 增加弧線。 套用 ref-roller，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.6 秒，速度 {speed}x 請使用 animation-duration: calc(3.6s / {speed})；逐字 delay 使用 calc(var(--i) * 45ms)。"
+},
+{
+      "id": "shuffle",
+      "order": 32,
+      "name": "Shuffle Letters",
+      "label_zh": "字母洗牌",
+      "reference_caption": "字母快速跳到不同位置和角度，數拍後回到正確順序。",
+      "role": "reference-effect",
+      "tags": [
+            "洗牌",
+            "拼圖",
+            "遊戲",
+            "重新排列"
+      ],
+      "choose_when": [
+            "洗牌、拼圖、遊戲、重新排列"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母快速跳到不同位置和角度，數拍後回到正確順序。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "SHUFFLE",
+      "implementation": {
+            "container_class": "effect--shuffle",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--shuffle\"><div class=\"stage-word\"><span>S</span><span>H</span><span>U</span><span>F</span><span>F</span><span>L</span><span>E</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "32-shuffle.html",
+            "runtime_url": "./index.html?effect=shuffle&text=SHUFFLE&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id shuffle when the brief calls for 洗牌、拼圖、遊戲、重新排列.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Shuffle Letters」；effect_id 為 shuffle。視覺目標：字母快速跳到不同位置和角度，數拍後回到正確順序。 HTML 使用 .stage-canvas.effect--shuffle > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：用 --x/--y 做兩段隨機 translate/rotate，0–68% 洗牌，68% 後回原位；真交換可用 Fisher-Yates。 套用 ref-shuffle，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.0 秒，速度 {speed}x 請使用 animation-duration: calc(3.0s / {speed})；逐字 delay 使用 calc(var(--i) * 45ms)。"
+},
+{
+      "id": "spiral",
+      "order": 33,
+      "name": "Text Spiral",
+      "label_zh": "文字螺旋",
+      "reference_caption": "字母沿螺旋位移、旋轉、縮放，從外圍吸入中心後再散出。",
+      "role": "reference-effect",
+      "tags": [
+            "幻覺",
+            "吸入",
+            "旋渦",
+            "神秘標題"
+      ],
+      "choose_when": [
+            "幻覺、吸入、旋渦、神秘標題"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母沿螺旋位移、旋轉、縮放，從外圍吸入中心後再散出。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "SPIRAL",
+      "implementation": {
+            "container_class": "effect--spiral",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--spiral\"><div class=\"stage-word\"><span>S</span><span>P</span><span>I</span><span>R</span><span>A</span><span>L</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "33-spiral.html",
+            "runtime_url": "./index.html?effect=spiral&text=SPIRAL&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id spiral when the brief calls for 幻覺、吸入、旋渦、神秘標題.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Text Spiral」；effect_id 為 spiral。視覺目標：字母沿螺旋位移、旋轉、縮放，從外圍吸入中心後再散出。 HTML 使用 .stage-canvas.effect--spiral > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：設 --x/--y，初始 translate 變數、rotate(160deg)、scale(.3)，48%–78% 聚回，結尾反向移出。 套用 ref-spiral，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 4.2 秒，速度 {speed}x 請使用 animation-duration: calc(4.2s / {speed})；逐字 delay 使用 calc(var(--i) * 65ms)。"
+},
+{
+      "id": "jitter",
+      "order": 34,
+      "name": "Jitter Settle",
+      "label_zh": "抖動穩定",
+      "reference_caption": "文字先快速左右抖動，幾拍後逐步收斂到穩定位置。",
+      "role": "reference-effect",
+      "tags": [
+            "緊張",
+            "驚訝",
+            "警示",
+            "抖動"
+      ],
+      "choose_when": [
+            "緊張、驚訝、警示、抖動"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "文字先快速左右抖動，幾拍後逐步收斂到穩定位置。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "JITTER",
+      "implementation": {
+            "container_class": "effect--jitter",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--jitter\"><div class=\"stage-word\"><span>J</span><span>I</span><span>T</span><span>T</span><span>E</span><span>R</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "34-jitter.html",
+            "runtime_url": "./index.html?effect=jitter&text=JITTER&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id jitter when the brief calls for 緊張、驚訝、警示、抖動.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Jitter Settle」；effect_id 為 jitter。視覺目標：文字先快速左右抖動，幾拍後逐步收斂到穩定位置。 HTML 使用 .stage-canvas.effect--jitter > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：前 36% 用 ±4px/±3px 不規則 translate，56% 後回到 0；每字錯開但結尾完全對齊。 套用 ref-jitter，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 2.4 秒，速度 {speed}x 請使用 animation-duration: calc(2.4s / {speed})；逐字 delay 使用 calc(var(--i) * 35ms)。"
+},
+{
+      "id": "stretch",
+      "order": 35,
+      "name": "Elastic Wave Stretch",
+      "label_zh": "彈性拉伸",
+      "reference_caption": "字母由窄變寬，波浪般拉伸後回彈。",
+      "role": "reference-effect",
+      "tags": [
+            "音樂",
+            "POP",
+            "橡皮筋",
+            "彈性字體"
+      ],
+      "choose_when": [
+            "音樂、POP、橡皮筋、彈性字體"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母由窄變寬，波浪般拉伸後回彈。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "STRETCH",
+      "implementation": {
+            "container_class": "effect--stretch",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--stretch\"><div class=\"stage-word\"><span>S</span><span>T</span><span>R</span><span>E</span><span>T</span><span>C</span><span>H</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "35-stretch.html",
+            "runtime_url": "./index.html?effect=stretch&text=STRETCH&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id stretch when the brief calls for 音樂、POP、橡皮筋、彈性字體.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Elastic Wave Stretch」；effect_id 為 stretch。視覺目標：字母由窄變寬，波浪般拉伸後回彈。 HTML 使用 .stage-canvas.effect--stretch > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：span 以 scaleX(.78) 開始，45%–62% 拉到 1.35，75% 回到 .95；用逐字 delay。 套用 ref-stretch，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.2 秒，速度 {speed}x 請使用 animation-duration: calc(3.2s / {speed})；逐字 delay 使用 calc(var(--i) * 60ms)。"
+},
+{
+      "id": "ink",
+      "order": 36,
+      "name": "Ink Bleed",
+      "label_zh": "墨水暈染",
+      "reference_caption": "字母像墨水滴入紙張，先模糊膨脹，再凝聚成清晰字形並暈開。",
+      "role": "reference-effect",
+      "tags": [
+            "手寫",
+            "墨水",
+            "和風",
+            "柔和顯影"
+      ],
+      "choose_when": [
+            "手寫、墨水、和風、柔和顯影"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母像墨水滴入紙張，先模糊膨脹，再凝聚成清晰字形並暈開。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "INK",
+      "implementation": {
+            "container_class": "effect--ink",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--ink\"><div class=\"stage-word\"><span>I</span><span>N</span><span>K</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "36-ink.html",
+            "runtime_url": "./index.html?effect=ink&text=INK&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id ink when the brief calls for 手寫、墨水、和風、柔和顯影.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Ink Bleed」；effect_id 為 ink。視覺目標：字母像墨水滴入紙張，先模糊膨脹，再凝聚成清晰字形並暈開。 HTML 使用 .stage-canvas.effect--ink > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：初始 opacity:0、blur(12px)、scale(1.3)，42%–70% 收回清晰，結尾再 blur；可疊 radial-gradient 墨暈。 套用 ref-ink，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.5 秒，速度 {speed}x 請使用 animation-duration: calc(3.5s / {speed})；逐字 delay 使用 calc(var(--i) * 65ms)。"
+},
+{
+      "id": "assemble",
+      "order": 37,
+      "name": "Letter Assemble",
+      "label_zh": "字母組裝",
+      "reference_caption": "散落四周的字母以不同角度與速度聚回中心，組成完整標題。",
+      "role": "reference-effect",
+      "tags": [
+            "標題導入",
+            "品牌",
+            "由散到整"
+      ],
+      "choose_when": [
+            "標題導入、品牌、由散到整"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "散落四周的字母以不同角度與速度聚回中心，組成完整標題。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "ASSEMBLE",
+      "implementation": {
+            "container_class": "effect--assemble",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--assemble\"><div class=\"stage-word\"><span>A</span><span>S</span><span>S</span><span>E</span><span>M</span><span>B</span><span>L</span><span>E</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "37-assemble.html",
+            "runtime_url": "./index.html?effect=assemble&text=ASSEMBLE&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id assemble when the brief calls for 標題導入、品牌、由散到整.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Letter Assemble」；effect_id 為 assemble。視覺目標：散落四周的字母以不同角度與速度聚回中心，組成完整標題。 HTML 使用 .stage-canvas.effect--assemble > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：每個 span 設 --x/--y/--r，0–18% 偏移旋轉，48%–78% 聚回中心，結尾可淡出重播。 套用 ref-assemble，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.6 秒，速度 {speed}x 請使用 animation-duration: calc(3.6s / {speed})；逐字 delay 使用 calc(var(--i) * 55ms)。"
+},
+{
+      "id": "mosaic",
+      "order": 38,
+      "name": "Text Mosaic",
+      "label_zh": "文字馬賽克",
+      "reference_caption": "文字被切成格子，方塊逐格亮起並合成完整字形。",
+      "role": "reference-effect",
+      "tags": [
+            "設計展示",
+            "格子",
+            "逐格顯影"
+      ],
+      "choose_when": [
+            "設計展示、格子、逐格顯影"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "文字被切成格子，方塊逐格亮起並合成完整字形。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "MOSAIC",
+      "implementation": {
+            "container_class": "effect--mosaic",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--mosaic\"><div class=\"stage-word\"><span>M</span><span>O</span><span>S</span><span>A</span><span>I</span><span>C</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "38-mosaic.html",
+            "runtime_url": "./index.html?effect=mosaic&text=MOSAIC&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id mosaic when the brief calls for 設計展示、格子、逐格顯影.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Text Mosaic」；effect_id 為 mosaic。視覺目標：文字被切成格子，方塊逐格亮起並合成完整字形。 HTML 使用 .stage-canvas.effect--mosaic > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：使用 CSS mask 或 background 分 cells，依序用 steps(4,end) 控制 opacity/scale；簡化版每 span 當 tile。 套用 ref-mosaic，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.2 秒，速度 {speed}x 請使用 animation-duration: calc(3.2s / {speed})；逐字 delay 使用 calc(var(--i) * 45ms)。"
+},
+{
+      "id": "crumble",
+      "order": 39,
+      "name": "Crumble Down",
+      "label_zh": "碎裂崩落",
+      "reference_caption": "文字先完整停留，接著逐字傾斜、下沉、碎裂並掉出畫面。",
+      "role": "reference-effect",
+      "tags": [
+            "結幕",
+            "崩解",
+            "結束",
+            "碎裂"
+      ],
+      "choose_when": [
+            "結幕、崩解、結束、碎裂"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "文字先完整停留，接著逐字傾斜、下沉、碎裂並掉出畫面。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "CRUMBLE",
+      "implementation": {
+            "container_class": "effect--crumble",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--crumble\"><div class=\"stage-word\"><span>C</span><span>R</span><span>U</span><span>M</span><span>B</span><span>L</span><span>E</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "39-crumble.html",
+            "runtime_url": "./index.html?effect=crumble&text=CRUMBLE&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id crumble when the brief calls for 結幕、崩解、結束、碎裂.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Crumble Down」；effect_id 為 crumble。視覺目標：文字先完整停留，接著逐字傾斜、下沉、碎裂並掉出畫面。 HTML 使用 .stage-canvas.effect--crumble > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：0–24% 原位，58% translateY(25px) rotate(8deg)，100% 更大位移與 35deg 掉出；容器 overflow:hidden。 套用 ref-crumble，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.2 秒，速度 {speed}x 請使用 animation-duration: calc(3.2s / {speed})；逐字 delay 使用 calc(var(--i) * 70ms)。"
+},
+{
+      "id": "float",
+      "order": 40,
+      "name": "Float Drift",
+      "label_zh": "漂浮微移",
+      "reference_caption": "字母上下漂浮並輕微旋轉，像氣球在空氣中慢慢漂移。",
+      "role": "reference-effect",
+      "tags": [
+            "夢境",
+            "療癒",
+            "背景",
+            "低干擾循環"
+      ],
+      "choose_when": [
+            "夢境、療癒、背景、低干擾循環"
+      ],
+      "avoid_when": [
+            "若需求不符合這個運動語言，改讀其他 effect 的 choose_when。"
+      ],
+      "motion": "字母上下漂浮並輕微旋轉，像氣球在空氣中慢慢漂移。",
+      "visual": {
+            "background": "reference",
+            "text": "reference",
+            "accent": "reference",
+            "tempo": "reference"
+      },
+      "sample": "FLOAT",
+      "implementation": {
+            "container_class": "effect--float",
+            "letter_selector": ".stage-word span",
+            "required_css": "./reference.css",
+            "required_markup": "<div class=\"stage-canvas effect--float\"><div class=\"stage-word\"><span>F</span><span>L</span><span>O</span><span>A</span><span>T</span></div></div>"
+      },
+      "export": {
+            "format": "motion-text-effect-html@1",
+            "download_name": "40-float.html",
+            "runtime_url": "./index.html?effect=float&text=FLOAT&speed=1#playground"
+      },
+      "agent_instruction": "Select effect_id float when the brief calls for 夢境、療癒、背景、低干擾循環.",
+      "agent_prompt_template": "你是前端工程師，請為文字「{text}」實作可重播的 CSS 文字特效「Float Drift」；effect_id 為 float。視覺目標：字母上下漂浮並輕微旋轉，像氣球在空氣中慢慢漂移。 HTML 使用 .stage-canvas.effect--float > .stage-word，將每個字元拆成 .stage-word > span，並在 span 設定 --i；必要時使用 --x、--y、--r。實作重點：在 translateY(10px) rotate(-2deg) 與 translateY(-16px) rotate(2deg) 間 ease-in-out 循環；不要大幅改變 opacity。 套用 ref-float，背景、線條或輔助圖層請放在容器 pseudo-element，不要把網站導覽或控制器放進素材。基準週期 3.8 秒，速度 {speed}x 請使用 animation-duration: calc(3.8s / {speed})；逐字 delay 使用 calc(var(--i) * 60ms)。"
+}
+  ]
+}
