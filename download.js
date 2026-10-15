@@ -1,5 +1,5 @@
 const downloadButton = document.querySelector('#download-current')
-const registryRequest = fetch('./effects.json?v=prompt-3').then((response) => {
+const registryRequest = fetch('./effects.json?v=prompt-4').then((response) => {
   if (!response.ok) throw new Error(`Unable to load effect registry: ${response.status}`)
   return response.json()
 })
@@ -70,7 +70,36 @@ function getCurrentState() {
 }
 
 function fillAgentPrompt(effect, text, speed) {
-  return effect.agent_prompt_template
+  const effectNumber = String(effect.order ?? '').padStart(2, '0')
+  const siteUrl = new URL('./', window.location.href).toString()
+  const playgroundUrl = packageUrl(effect.id, text, speed)
+  const effectsApiUrl = new URL('./effects.json', window.location.href).toString()
+  const manifestApiUrl = new URL('./agent-manifest.json', window.location.href).toString()
+  const promptContext = [
+    '【效果識別】',
+    `效果編號：${effectNumber} / 40`,
+    `effect_id：${effect.id}`,
+    `效果名稱：${effect.name}`,
+    `網站位址：${siteUrl}`,
+    `本效果 Playground：${playgroundUrl}`,
+    `效果資料 API：GET ${effectsApiUrl}`,
+    `Agent manifest API：GET ${manifestApiUrl}`,
+    '【Agent 調用方式】',
+    `預覽：開啟 ${playgroundUrl}`,
+    `切換效果：window.MotionTextLab.selectEffect('${effect.id}')`,
+    "套用文字：window.MotionTextLab.setText('使用者指定的文字')",
+    '重新播放：window.MotionTextLab.replay()',
+    '【套用任務】',
+    '請把這個 Motion Text Lab 動態套用到使用者自己的文字、標題、字幕、Logo 或現有元件，不要只建立一個獨立示範頁。',
+    `目前示範文字是「${text}」；如果使用者另有指定內容，請以使用者的內容為準，將這段示範文字只視為效果參考。`,
+    '如果使用者已提供頁面或專案，請在現有結構中整合，保留原本文字內容、語意、字型、顏色、版面與互動，除非使用者另有要求。只新增或調整必要的動畫樣式。',
+    '如果尚未提供目標檔案，先確認要套用到哪個頁面、元件或框架，不要擅自建立無關的 demo page。',
+    `速度參數：${Number(speed).toFixed(1)}x。完成後確認效果可重播、只作用於目標元素、不影響其他內容，並簡短說明修改了哪些檔案。`,
+    '【效果實作規格】',
+    effect.agent_prompt_template,
+  ].join('\n\n')
+
+  return promptContext
     .replaceAll('{text}', text)
     .replaceAll('{speed}', Number(speed).toFixed(1))
 }

@@ -20,7 +20,7 @@
     {"id": "set_controls", "method": "DOM", "selector": "#playground", "fields": ["[data-agent-field=text]", "[data-agent-field=effect]", "[data-agent-field=speed]"], "behavior": "文字、效果與速度即時更新 playground"},
     {"id": "replay_effect", "method": "DOM", "selector": "#replay-button"},
     {"id": "download_html", "method": "DOM", "selector": "#download-current", "precondition": "先選擇或套用 effect_id", "result": "standalone HTML file"},
-    {"id": "copy_agent_prompt", "method": "DOM", "selector": "#copy-prompt", "precondition": "先選擇或套用 effect_id", "result": "implementation prompt with visual, HTML, CSS, keyframe, and speed instructions"},
+    {"id": "copy_agent_prompt", "method": "DOM", "selector": "#copy-prompt", "precondition": "先選擇或套用 effect_id", "result": "integration-ready prompt with effect number, URLs, API calls, visual, HTML, CSS, keyframe, and speed instructions"},
     {"id": "copy_card_prompt", "method": "DOM", "selector": "[data-copy-prompt]", "effect_id_attribute": "data-copy-prompt"}
   ],
   "stable_selectors": {

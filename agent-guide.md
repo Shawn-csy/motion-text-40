@@ -9,7 +9,17 @@
 3. `text` 最多 12 個字元；`speed` 建議使用 `0.6` 到 `1.8`。
 4. 若使用者要求可讀性，優先考慮 `heartbeat`；若使用者要求倒數，使用 `slam`。09–40 的完整選擇條件、動作、CSS recipe 與 prompt 以 `effects.json` 為準。
 
-每個 `effects[]` 項目都有 `agent_prompt_template`。這不是只有靈感描述，而是一段可直接交給前端 agent 的實作規格，包含視覺目標、HTML 結構、CSS selector、逐字變數、keyframe 時間軸與速度換算。複製前把 `{text}` 和 `{speed}` 換成目前需求；頁面上的「複製實作 Prompt」按鈕會自動完成這件事。
+每個 `effects[]` 項目都有 `agent_prompt_template`。這不是只有靈感描述，而是一段可直接交給前端 agent 的實作規格，包含視覺目標、HTML 結構、CSS selector、逐字變數、keyframe 時間軸與速度換算。它的用途是把效果套用到使用者現有的文字或元件，不是要求 Agent 另做一個與使用者專案無關的 demo page。複製前把 `{text}` 和 `{speed}` 換成目前需求；頁面上的「複製實作 Prompt」按鈕會自動補上整合規則、效果編號、網站位址、Playground URL、規格 API 與 runtime 調用方式。
+
+## Prompt 的正確使用方式
+
+複製的 Prompt 交給 Agent 後，Agent 應該依照以下順序工作：
+
+1. 先找出使用者指定的目標文字、標題、字幕、Logo 或現有元件；目前 Prompt 裡的示範文字只用來說明動態，不是必須保留的內容。
+2. 在使用者現有的 HTML、CSS、React、Vue 或其他前端結構中整合，不要擅自建立無關的獨立頁面。
+3. 保留使用者原本的文字、語意、字型、顏色、版面與互動，只加入必要的動畫 class、span 結構、keyframes 或容器 pseudo-element。
+4. 讓動畫可以重播、只作用於目標元素，並依照使用者指定的速度調整週期。
+5. 完成後說明修改的檔案與套用方式；如果沒有提供目標檔案，先詢問要套用到哪個頁面或元件。
 
 ## Agent API
 
@@ -18,6 +28,14 @@
 - 預覽 URL：`./index.html?effect={effect_id}&text={text}&speed={speed}#playground`。
 - 頁面 runtime：`window.MotionTextLab.getState()`、`selectEffect(effect_id)`、`setText(text)`、`replay()`。
 - 素材下載使用 `#download-current`；每個卡片也有 `[data-download-effect]`。
+
+複製出的 Prompt 會列出目前效果的 `order` 編號（例如 `12 / 40`）、`effect_id`、效果名稱、網站位址，以及可以直接開啟的 Playground URL。若 Agent 需要讀取效果規格，使用 Prompt 裡的 `GET ./effects.json` 位址；若要操作目前頁面，可使用：
+
+```js
+window.MotionTextLab.selectEffect('magnifier')
+window.MotionTextLab.setText('使用者的文字')
+window.MotionTextLab.replay()
+```
 
 ## Effect ID 對照
 
