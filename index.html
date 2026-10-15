@@ -9,7 +9,7 @@
   <link rel="alternate" type="application/json" href="./agent-manifest.json" title="Agent manifest">
   <link rel="alternate" type="application/json" href="./effects.json" title="Motion effect registry">
   <link rel="stylesheet" href="./style.css?v=compact-12">
-  <link rel="stylesheet" href="./reference.css?v=compact-4">
+  <link rel="stylesheet" href="./reference.css?v=compact-5">
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -27,7 +27,7 @@
       <div class="playground-grid">
         <div class="stage-panel" data-stage-panel>
           <div class="panel-topline"><div class="stage-picker"><span class="stage-live-label">LIVE /</span><button class="icon-button stage-nav-button" id="previous-effect" type="button" aria-label="上一個效果" title="上一個效果"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg></button><select class="stage-effect-select" id="effect-select" name="effect" aria-label="選擇動畫效果" data-agent-field="effect"><option value="lightning">Lightning Strike</option><option value="laser">Laser Cut</option><option value="coin">Coin Flip</option><option value="explode">Explode Out</option><option value="disintegrate">Disintegrate</option><option value="heartbeat">Heartbeat Zoom</option><option value="kaleido">Text Kaleido</option><option value="slam">Number Slam</option></select><button class="icon-button stage-nav-button" id="next-effect" type="button" aria-label="下一個效果" title="下一個效果"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></button></div><span class="panel-tools"><span id="stage-counter">01</span><button class="icon-button" id="replay-button" type="button" aria-label="重新播放" title="重新播放"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 2v6h6"></path><path d="M3.51 15a9 9 0 1 0 .49-9.95L3 8"></path></svg></button></span></div>
-          <div class="stage-canvas effect--lightning" id="stage-canvas" aria-live="polite"><div class="stage-scanline"></div><div class="stage-word" id="stage-word">MOTION</div></div>
+          <div class="stage-canvas effect--lightning" id="stage-canvas" aria-live="polite"><div class="stage-scanline"></div><span class="stage-effect-detail" aria-hidden="true"></span><div class="stage-word" id="stage-word">MOTION</div></div>
         </div>
         <form class="control-panel" id="control-panel">
           <div class="control-group compact-control text-control"><input id="text-input" name="text" value="MOTION" maxlength="12" autocomplete="off" aria-label="文字" placeholder="文字" data-agent-field="text"></div>
@@ -54,7 +54,7 @@
   </main>
 
   <footer class="site-footer section-shell"><span>01 — 40 / 40</span><span>© shawnup.com</span><a href="https://github.com/Shawn-csy/motion-text-40" target="_blank" rel="noopener noreferrer">GitHub ↗</a></footer>
-  <script src="./app.js?v=html-9"></script>
+  <script src="./app.js?v=html-10"></script>
   <script src="./download.js?v=html-7"></script>
 </body>
 </html>

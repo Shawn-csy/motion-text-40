@@ -277,13 +277,24 @@ nextEffectButton.addEventListener('click', () => stepEffect(1))
 
 document.querySelectorAll('[data-effect-card]').forEach((card) => {
   const activate = () => {
-    setText(card.dataset.effect === 'slam' ? '3' : card.dataset.text || EFFECTS[card.dataset.effect].sample)
-    setEffect(card.dataset.effect)
-    document.querySelector('#playground').scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const effectId = card.dataset.effectCard
+    if (!EFFECTS[effectId]) return
+
+    setText(effectId === 'slam' ? '3' : EFFECTS[effectId].sample)
+    setEffect(effectId)
+
+    const playground = document.querySelector('#playground')
+    if (!playground) return
+
+    const url = new URL(window.location.href)
+    url.searchParams.set('effect', effectId)
+    url.searchParams.set('text', currentText)
+    url.searchParams.set('speed', speedInput.value)
+    url.hash = 'playground'
+    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
+    playground.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
-  card.addEventListener('click', (event) => {
-    if (event.target.closest('[data-use-effect]')) activate()
-  })
+
   card.querySelector('[data-use-effect]')?.addEventListener('click', activate)
 })
 
